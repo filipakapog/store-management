@@ -43,3 +43,16 @@ jobs:
       with:
         name: surefire-reports
         path: target/surefire-reports
+
+    - name: Generate GitHub Pages
+      if: always() # This step runs even if the previous steps fail
+      run: |
+        mkdir gh-pages
+        cp -r target/surefire-reports/* gh-pages/
+
+    - name: Deploy GitHub Pages
+      if: always() # This step runs even if the previous steps fail
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./gh-pages
