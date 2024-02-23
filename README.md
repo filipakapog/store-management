@@ -1,2 +1,13 @@
-# store-management
-A REST API Application with for Store Management Activities
+# Store Management
+A REST API Application for Store Management Activities
+
+The application is written using [Java 21 Temurin](https://adoptium.net/temurin/releases/) 
+
+# Prerequisites
+
+You will need to have the following tools in order to run the application:
+- [Docker Desktop](https://docs.docker.com/compose/install/)
+
+# How to Build the Application
+
+# How to run the Application
