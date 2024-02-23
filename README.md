@@ -1,4 +1,4 @@
-# Store Management ![example workflow](https://github.com/filipakapog/store-management/actions/workflows/buildPipeline.yml/badge.svg?event=push)
+# Store Management ![example workflow](https://github.com/filipakapog/store-management/actions/workflows/ciPipeline.yml/badge.svg?event=push)
 A REST API Application for Store Management Activities
 
 The application is written using [Java 21 Temurin](https://adoptium.net/temurin/releases/) 

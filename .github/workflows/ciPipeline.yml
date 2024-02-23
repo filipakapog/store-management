@@ -54,7 +54,7 @@ jobs:
     - name: Generate GitHub Pages
       if: always() # This step runs even if the previous steps fail
       run: |
-        mkdir gh-pages
+        rm -rf gh-pages/*
         cp -r target/surefire-reports/* gh-pages/
 
     - name: Deploy GitHub Pages
