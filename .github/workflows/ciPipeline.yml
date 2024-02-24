@@ -16,7 +16,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -33,12 +32,22 @@ jobs:
     - name: Build Project
       run: mvn clean install -DskipTests
 
-    - name: Run Tests
-      run: mvn verify
+  unit-tests:
+    runs-on: ubuntu-latest
 
-    - name: Generate and Display Test Report
-      if: always() # This step runs even if the previous steps fail
-      run: mvn surefire-report:report-only
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Run Tests
+      run: mvn test
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v2
@@ -46,11 +55,15 @@ jobs:
         name: surefire-reports
         path: target/surefire-reports
 
+    - name: Generate and Display Test Report
+      if: always()
+      run: mvn surefire-report:report-only
+
     - name: Generate GitHub Pages
-      if: always() # This step runs even if the previous steps fail
+      if: always()
       run: |
         mkdir gh-pages
-        cp -r target/surefire-reports/* gh-pages/
+        cp -r target/site/* gh-pages/
 
     - name: Deploy GitHub Pages
       if: always() # This step runs even if the previous steps fail
@@ -58,3 +71,26 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./gh-pages
+
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Run Tests
+      run: mvn failsafe:integration-test
+
+    - name: Upload Test Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: failsafe-reports
+        path: target/failsafe-reports
