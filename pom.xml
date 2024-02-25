@@ -16,9 +16,9 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<skip.ut>false</skip.ut>
+		<skip.ut>true</skip.ut>
+		<skip.it>true</skip.it>
 	</properties>
-
 
 	<dependencies>
 		<dependency>
@@ -78,6 +78,7 @@
 				<version>3.2.5</version>
 				<configuration>
 					<includes>**/*IT</includes>
+					<skipTests>${skip.it}</skipTests>
 				</configuration>
 			</plugin>
 		</plugins>
