@@ -35,7 +35,7 @@ class StoreManagementControllerIT {
                 .statusCode(200)
                 .body("uuid", notNullValue())
                 .body("name", equalTo("name"))
-                .body("description", equalTo("descriptiondas"))
+                .body("description", equalTo("description"))
                 .body("quantity", equalTo(2))
                 .body("price", equalTo(22.5f));
     }
@@ -52,7 +52,7 @@ class StoreManagementControllerIT {
                 .statusCode(200)
                 .body("uuid", equalTo(productUuid))
                 .body("name", equalTo("Sunny Honey"))
-                .body("description", equalTo("The sweets honey you need"))
+                .body("description", equalTo("The sweet honey you need"))
                 .body("quantity", equalTo(2))
                 .body("price", equalTo(12.5f));
     }
