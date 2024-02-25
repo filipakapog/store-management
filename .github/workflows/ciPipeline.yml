@@ -55,14 +55,6 @@ jobs:
         name: surefire-reports
         path: target/surefire-reports
 
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        name: JEST Tests
-        path: target/surefire-reports/TEST-*.xml
-        reporter: jest-junit
-
   integration-tests:
     runs-on: ubuntu-latest
 
@@ -85,11 +77,3 @@ jobs:
       with:
         name: failsafe-reports
         path: target/failsafe-reports
-
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        name: JEST Tests
-        path: target/failsafe-reports/TEST-*.xml
-        reporter: jest-junit
