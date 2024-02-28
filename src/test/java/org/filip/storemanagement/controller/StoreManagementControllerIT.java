@@ -2,12 +2,11 @@ package org.filip.storemanagement.controller;
 
 import io.restassured.RestAssured;
 import org.filip.storemanagement.controller.dto.CreateProductRequest;
+import org.filip.storemanagement.controller.dto.CreateProductResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-
-import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
 import static io.restassured.RestAssured.given;
@@ -26,34 +25,42 @@ class StoreManagementControllerIT {
     @Test
     void createProduct() {
         given()
-                .contentType("application/json")
-                .log().all()
+            .contentType("application/json")
+            .log().all()
         .when()
-                .body(new CreateProductRequest("name", "description", 2, 22.5))
-                .post("/storemng/products")
+            .body(new CreateProductRequest("name", "description", 2, 22.5))
+            .post("/storemng/products")
         .then()
-                .statusCode(200)
-                .body("uuid", notNullValue())
-                .body("name", equalTo("name"))
-                .body("description", equalTo("description"))
-                .body("quantity", equalTo(2))
-                .body("price", equalTo(22.5f));
+            .statusCode(200)
+            .body("uuid", notNullValue())
+            .body("name", equalTo("name"))
+            .body("description", equalTo("description"))
+            .body("quantity", equalTo(2))
+            .body("price", equalTo(22.5f));
     }
 
     @Test
     void getProductById() {
-        String productUuid = UUID.randomUUID().toString();
-        given()
-                .contentType("application/json")
-                .log().all()
+        CreateProductResponse response = given()
+            .contentType("application/json")
+            .log().all()
         .when()
-                .get("/storemng/products/" + productUuid)
+            .body(new CreateProductRequest("name", "description", 2, 22.5))
+            .post("/storemng/products")
+            .body()
+            .as(CreateProductResponse.class);
+
+        given()
+            .contentType("application/json")
+            .log().all()
+        .when()
+            .get("/storemng/products/" + response.uuid())
         .then()
-                .statusCode(200)
-                .body("uuid", equalTo(productUuid))
-                .body("name", equalTo("Sunny Honey"))
-                .body("description", equalTo("The sweet honey you need"))
-                .body("quantity", equalTo(2))
-                .body("price", equalTo(12.5f));
+            .statusCode(200)
+            .body("uuid", equalTo(response.uuid()))
+            .body("name", equalTo("name"))
+            .body("description", equalTo("description"))
+            .body("quantity", equalTo(2))
+            .body("price", equalTo(22.5f));
     }
 }
