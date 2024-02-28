@@ -3,7 +3,6 @@ package org.filip.storemanagement.controller;
 import io.restassured.RestAssured;
 import org.filip.storemanagement.controller.dto.CreateProductRequest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
