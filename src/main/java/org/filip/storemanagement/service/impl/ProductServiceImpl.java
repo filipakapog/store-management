@@ -5,7 +5,6 @@ import org.filip.storemanagement.repository.ProductRepository;
 import org.filip.storemanagement.service.Product;
 import org.filip.storemanagement.service.ProductService;
 import org.filip.storemanagement.service.ProductWithUuid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,8 +14,11 @@ import static org.filip.storemanagement.service.ProductServiceException.productD
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public Product createProduct(Product product) {

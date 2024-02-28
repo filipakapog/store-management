@@ -5,6 +5,7 @@ public class ProductServiceException extends RuntimeException {
     private final String errorMessage;
 
     public ProductServiceException(int httpErrorCode, String errorMessage) {
+        super(errorMessage);
         this.httpErrorCode = httpErrorCode;
         this.errorMessage = errorMessage;
     }
