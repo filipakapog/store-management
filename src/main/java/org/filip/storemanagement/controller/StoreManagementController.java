@@ -10,15 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/storemng/products")
 public class StoreManagementController {
+
+    private static final Logger LOGGER = Logger.getLogger(StoreManagementController.class.getName());
 
     @Autowired
     private ProductService productService;
 
     @PostMapping
     public ResponseEntity<CreateProductResponse> createProduct(@RequestBody CreateProductRequest request) {
+        LOGGER.log(Level.INFO, () -> "Received create Product request with body: " + request);
         Product product = productService.createProduct(new Product(request));
         CreateProductResponse response = computCreateProductResponse(product);
         return ResponseEntity.ok().body(response);
@@ -26,6 +32,7 @@ public class StoreManagementController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<GetProductResponse> readProductById(@PathVariable("uuid") String uuid) {
+        LOGGER.log(Level.INFO, () -> "Received read Product request for Product with id: " + uuid);
         Product product = productService.readProduct(new ProductWithUuid(uuid));
         GetProductResponse response = computeGetProductResponse(product);
         return ResponseEntity.ok().body(response);
