@@ -2,6 +2,7 @@ package org.filip.storemanagement.service;
 
 import org.filip.storemanagement.controller.dto.CreateProductRequest;
 import org.filip.storemanagement.repository.ProductE;
+import org.filip.storemanagement.service.exception.ProductServiceException;
 
 import java.util.Objects;
 import java.util.UUID;

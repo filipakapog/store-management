@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import java.util.UUID;
+
 import static org.hamcrest.Matchers.*;
 import static io.restassured.RestAssured.given;
 
@@ -23,7 +25,7 @@ class StoreManagementControllerIT {
     }
 
     @Test
-    void createProduct() {
+    void createProduct_validFields_productReturned() {
         given()
             .contentType("application/json")
             .log().all()
@@ -40,7 +42,21 @@ class StoreManagementControllerIT {
     }
 
     @Test
-    void getProductById() {
+    void createProducts_quantityIsString_errorMessageReturned() {
+        given()
+            .contentType("application/json")
+            .log().all()
+        .when()
+            .body("{\"name\": \"a name\", \"description\": \"a description\", \"quantity\": \"quantity\"}")
+            .post("/storemng/products")
+        .then()
+            .statusCode(400)
+            .body("errorCode", equalTo(400))
+            .body("errorMessage", equalTo("JSON parse error: Cannot deserialize value of type `int` from String \"quantity\": not a valid `int` value"));
+    }
+
+    @Test
+    void getProductById_productFound_productReturned() {
         CreateProductResponse response = given()
             .contentType("application/json")
             .log().all()
@@ -62,5 +78,18 @@ class StoreManagementControllerIT {
             .body("description", equalTo("description"))
             .body("quantity", equalTo(2))
             .body("price", equalTo(22.5f));
+    }
+
+    @Test
+    void getProductById_productNotFound_errorMessageReturned() {
+        given()
+            .contentType("application/json")
+            .log().all()
+        .when()
+            .get("/storemng/products/" + UUID.randomUUID())
+        .then()
+            .statusCode(404)
+            .body("errorCode", equalTo(404))
+            .body("errorMessage", equalTo("Product not found"));
     }
 }

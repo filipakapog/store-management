@@ -5,11 +5,10 @@ import org.filip.storemanagement.repository.ProductRepository;
 import org.filip.storemanagement.service.Product;
 import org.filip.storemanagement.service.ProductService;
 import org.filip.storemanagement.service.ProductWithUuid;
+import org.filip.storemanagement.service.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static org.filip.storemanagement.service.ProductServiceException.productDoesNotExist;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -30,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product readProduct(ProductWithUuid product) {
         Optional<ProductE> productEOpt = productRepository.findById(product.getId().toString());
-        ProductE productE = productEOpt.orElseThrow(() -> { throw productDoesNotExist(); });
+        ProductE productE = productEOpt.orElseThrow(() -> { throw new ProductNotFoundException(); });
         return new Product(productE);
     }
 }

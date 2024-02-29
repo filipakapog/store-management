@@ -2,7 +2,7 @@ package org.filip.storemanagement.service.impl;
 
 import org.filip.storemanagement.repository.ProductRepository;
 import org.filip.storemanagement.service.ProductService;
-import org.filip.storemanagement.service.ProductServiceException;
+import org.filip.storemanagement.service.exception.ProductNotFoundException;
 import org.filip.storemanagement.service.ProductWithUuid;
 import org.junit.jupiter.api.Test;
 
@@ -28,12 +28,12 @@ class ProductServiceImplTest {
         ProductService productService = new ProductServiceImpl(productRepository);
 
         // WHEN
-        ProductServiceException exception = assertThrows(ProductServiceException.class,
+        ProductNotFoundException exception = assertThrows(ProductNotFoundException.class,
                 () -> productService.readProduct(productWithUuid));
 
         // THEN
-        assertEquals("Product does not exist", exception.getMessage());
-        assertEquals("Product does not exist", exception.getErrorMessage());
+        assertEquals("Product not found", exception.getMessage());
+        assertEquals("Product not found", exception.getErrorMessage());
         assertEquals(404, exception.getHttpErrorCode());
     }
 }

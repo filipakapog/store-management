@@ -1,5 +1,8 @@
 package org.filip.storemanagement.service;
 
+import org.filip.storemanagement.service.exception.InvalidInputException;
+import org.filip.storemanagement.service.exception.ProductServiceException;
+
 import java.util.UUID;
 
 public class ProductWithUuid {
@@ -23,6 +26,6 @@ public class ProductWithUuid {
     }
 
     private void throwInvalidUserInputException(String errorMessage) {
-        throw new ProductServiceException(400, errorMessage);
+        throw new InvalidInputException(errorMessage);
     }
 }

@@ -1,4 +1,4 @@
-package org.filip.storemanagement.service;
+package org.filip.storemanagement.service.exception;
 
 public class ProductServiceException extends RuntimeException {
     private final int httpErrorCode;
@@ -8,10 +8,6 @@ public class ProductServiceException extends RuntimeException {
         super(errorMessage);
         this.httpErrorCode = httpErrorCode;
         this.errorMessage = errorMessage;
-    }
-
-    public static ProductServiceException productDoesNotExist() {
-        return new ProductServiceException(404, "Product does not exist");
     }
 
     public int getHttpErrorCode() {
