@@ -3,6 +3,7 @@ package org.filip.storemanagement.service.impl;
 import org.filip.storemanagement.repository.ProductE;
 import org.filip.storemanagement.repository.ProductRepository;
 import org.filip.storemanagement.service.Product;
+import org.filip.storemanagement.service.ProductPatched;
 import org.filip.storemanagement.service.ProductService;
 import org.filip.storemanagement.service.ProductWithUuid;
 import org.filip.storemanagement.service.exception.ProductNotFoundException;
@@ -37,6 +38,31 @@ public class ProductServiceImpl implements ProductService {
         ProductE productE = productEOpt.orElseThrow(() -> { throw logAndThrowNotFoundException(); });
         LOGGER.log(Level.INFO, () -> "Product fetched successfully from DB");
         return new Product(productE);
+    }
+
+    @Override
+    public Product patchProduct(ProductPatched product) {
+        Optional<ProductE> productEOpt = productRepository.findById(product.getId().toString());
+        ProductE productE = productEOpt.orElseThrow(() -> { throw logAndThrowNotFoundException(); });
+        patchEntity(product, productE);
+        productRepository.save(productE);
+        LOGGER.log(Level.INFO, () -> "Patched Product was saved successfully in DB");
+        return new Product(productE);
+    }
+
+    private void patchEntity(ProductPatched product, ProductE entity) {
+        if (product.getDescription() != null) {
+            entity.setDescription(product.getDescription());
+        }
+        if (product.getName() != null) {
+            entity.setName(product.getName());
+        }
+        if (product.getPrice() != null) {
+            entity.setPrice(product.getPrice());
+        }
+        if (product.getQuantity() != null) {
+            entity.setQuantity(product.getQuantity());
+        }
     }
 
     private ProductNotFoundException logAndThrowNotFoundException() throws ProductNotFoundException {

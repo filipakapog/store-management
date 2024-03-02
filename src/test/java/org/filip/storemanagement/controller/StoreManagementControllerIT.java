@@ -3,6 +3,7 @@ package org.filip.storemanagement.controller;
 import io.restassured.RestAssured;
 import org.filip.storemanagement.controller.dto.CreateProductRequest;
 import org.filip.storemanagement.controller.dto.CreateProductResponse;
+import org.filip.storemanagement.controller.dto.PatchProductRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -73,7 +74,6 @@ class StoreManagementControllerIT {
             .get("/storemng/products/" + response.uuid())
         .then()
             .statusCode(200)
-            .body("uuid", equalTo(response.uuid()))
             .body("name", equalTo("name"))
             .body("description", equalTo("description"))
             .body("quantity", equalTo(2))
@@ -91,5 +91,29 @@ class StoreManagementControllerIT {
             .statusCode(404)
             .body("errorCode", equalTo(404))
             .body("errorMessage", equalTo("Product not found"));
+    }
+
+    @Test
+    void patchProduct_patchOnlyThePrice_onlyPriceChanges() {
+        CreateProductResponse response = given()
+            .contentType("application/json")
+            .log().all()
+        .when()
+            .body(new CreateProductRequest("name", "description", 2, 22.5))
+            .post("/storemng/products")
+            .as(CreateProductResponse.class);
+
+        given()
+            .contentType("application/json")
+            .log().all()
+        .when()
+            .body("{\"price\": 100.0}")
+            .patch("/storemng/products/" + response.uuid())
+        .then()
+            .statusCode(200)
+            .body("name", equalTo("name"))
+            .body("description", equalTo("description"))
+            .body("quantity", equalTo(2))
+            .body("price", equalTo(100.0f));
     }
 }

@@ -5,4 +5,6 @@ public interface ProductService {
     Product createProduct(Product product);
 
     Product readProduct(ProductWithUuid product);
+
+    Product patchProduct(ProductPatched product);
 }
