@@ -1,0 +1,9 @@
+services:
+  storage-management:
+    image: filip/storage-management
+    container_name: storage-management
+    build:
+      context: .
+    ports:
+      - 39009:9009
+      - 38080:8080
