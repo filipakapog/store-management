@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   storage-management:
     image: filip/storage-management
@@ -7,3 +8,17 @@ services:
     ports:
       - 39009:9009
       - 38080:8080
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: ["start-dev"]
+    environment:
+      KEYCLOAK_ADMIN: filip
+      KEYCLOAK_ADMIN_PASSWORD: test
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+    ports:
+      - 38081:8080
+
+volumes:
+  keycloak-data: {}
