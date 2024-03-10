@@ -9,9 +9,14 @@ You will need to have the following tools in order to build & run the applicatio
 - [Docker Desktop](https://docs.docker.com/compose/install/)
 - [Maven 3.6.3](https://maven.apache.org/docs/3.6.3/release-notes.html)
 
+# URLs
+- Keycloak Admin: http://localhost:38070/
+- Keycloak Storage-Management User Login: http://localhost:38070/realms/storage-management/account 
+
 # How to Build the Application
 ```bash
 mvn clean install -DskipTests
+docker compose -f my-app.yaml build
 ```
 
 
@@ -23,6 +28,12 @@ docker compose -f my-app.yaml up -d
 # How to stop the Application
 ```bash
 docker compose -f my-app.yaml down
+```
+
+# How to clean-up local testing environment (e.g. including volume deletion)
+```bash
+docker compose -f my-app.yaml down
+docker volume prune -a
 ```
 
 # How view app logs

@@ -7,6 +7,7 @@ import org.filip.storemanagement.service.ProductService;
 import org.filip.storemanagement.service.ProductWithUuid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Level;
@@ -22,6 +23,7 @@ public class StoreManagementController {
     private ProductService productService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CreateProductResponse> createProduct(@RequestBody CreateProductRequest request) {
         log("Received create Product request with body: " + request);
         Product product = productService.createProduct(new Product(request));
@@ -30,6 +32,7 @@ public class StoreManagementController {
     }
 
     @GetMapping("/{uuid}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<GetProductResponse> readProductById(@PathVariable("uuid") String uuid) {
         log("Received read Product request for Product with id: " + uuid);
         Product product = productService.readProduct(new ProductWithUuid(uuid));
@@ -38,6 +41,7 @@ public class StoreManagementController {
     }
 
     @PatchMapping("/{uuid}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<UpdateProductResponse> patchProductById(@PathVariable("uuid") String uuid,
                                                                   @RequestBody PatchProductRequest request) {
         log("Received patch Product request for Product with id: " + uuid + " with body: " + request);
